@@ -34,9 +34,9 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
     setIsSending(true);
 
     try {
-      // Netlify needs form-name and fields in a URL-encoded POST
       const payload: Record<string, string> = {
         "form-name": FORM_NAME,
+        "bot-field": "", // ✅ important for honeypot
         name: formData.name,
         email: formData.email,
         projectType: formData.projectType,
@@ -51,7 +51,9 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
         body: encodeForm(payload),
       });
 
-      if (!res.ok) throw new Error("Submission failed");
+      if (!res.ok) {
+        throw new Error(`Netlify submission failed: ${res.status}`);
+      }
 
       setIsSubmitted(true);
     } catch (err) {
@@ -100,7 +102,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
                 <CheckCircle className="text-accent-cyan mb-4" size={48} />
                 <h4 className="text-xl font-bold text-white mb-2">Request Received</h4>
                 <p className="text-slate-400 mb-6">
-                  I'll review your project details and reach out via email or WhatsApp to discuss the next steps.
+                  I&apos;ll review your project details and reach out via email or WhatsApp.
                 </p>
                 <button
                   onClick={onClose}
@@ -118,13 +120,11 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
                 onSubmit={handleSubmit}
                 className="space-y-5"
               >
-                {/* REQUIRED for Netlify forms */}
+                {/* Netlify required */}
                 <input type="hidden" name="form-name" value={FORM_NAME} />
-
-                {/* Honeypot */}
                 <p className="hidden">
                   <label>
-                    Don’t fill this out: <input name="bot-field" />
+                    Don’t fill this out: <input name="bot-field" onChange={handleChange} />
                   </label>
                 </p>
 
@@ -191,13 +191,13 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
                     onChange={handleChange}
                     rows={2}
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white focus:border-accent-cyan outline-none transition-colors resize-none"
-                    placeholder="e.g. Sell clothes, showcase services..."
+                    placeholder="e.g. Sell products, showcase services..."
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-medium text-slate-500 mb-1 uppercase tracking-wide">
-                    Do you need monthly maintenance?
+                    Monthly maintenance?
                   </label>
                   <select
                     name="maintenanceInterest"
@@ -206,7 +206,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
                     className="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 text-white focus:border-accent-cyan outline-none transition-colors"
                   >
                     <option value="No">No, just development</option>
-                    <option value="Yes">Yes, I need ongoing updates & support</option>
+                    <option value="Yes">Yes, ongoing updates & support</option>
                     <option value="Unsure">Unsure, let's discuss</option>
                   </select>
                 </div>
@@ -233,7 +233,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
                       isSending ? "opacity-70 cursor-not-allowed" : "hover:bg-slate-200"
                     }`}
                   >
-                    {isSending ? "Sending..." : "Start Conversation"} <ArrowRight size={18} />
+                    {isSending ? "Sending..." : "Start Project"} <ArrowRight size={18} />
                   </button>
                 </div>
               </form>
