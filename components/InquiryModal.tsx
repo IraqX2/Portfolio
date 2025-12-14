@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, CheckCircle, ArrowRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, CheckCircle, ArrowRight, RotateCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InquiryFormData } from '../types';
 
@@ -10,23 +10,41 @@ interface InquiryModalProps {
 
 const FORM_NAME = "start-project";
 
+const initialForm: InquiryFormData = {
+  name: '',
+  email: '',
+  projectType: 'Business Website',
+  projectPurpose: '',
+  maintenanceInterest: 'No',
+  timeline: '',
+};
+
 function encodeForm(data: Record<string, string>) {
   return new URLSearchParams(data).toString();
 }
 
 const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState<InquiryFormData>({
-    name: '',
-    email: '',
-    projectType: 'Business Website',
-    projectPurpose: '',
-    maintenanceInterest: 'No',
-    timeline: '',
-  });
-
+  const [formData, setFormData] = useState<InquiryFormData>(initialForm);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // ✅ Reset modal state every time it opens
+  useEffect(() => {
+    if (isOpen) {
+      setIsSubmitted(false);
+      setIsSending(false);
+      setErrorMsg(null);
+      // If you want to keep previous typed data, comment next line:
+      setFormData(initialForm);
+    }
+  }, [isOpen]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,7 +54,7 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
     try {
       const payload: Record<string, string> = {
         "form-name": FORM_NAME,
-        "bot-field": "", // ✅ important for honeypot
+        "bot-field": "", // honeypot
         name: formData.name,
         email: formData.email,
         projectType: formData.projectType,
@@ -51,22 +69,21 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
         body: encodeForm(payload),
       });
 
-      if (!res.ok) {
-        throw new Error(`Netlify submission failed: ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`Netlify submission failed: ${res.status}`);
 
       setIsSubmitted(true);
-    } catch (err) {
+      setIsSending(false);
+    } catch {
       setErrorMsg("Could not send. Please try again or contact via email/WhatsApp.");
-    } finally {
       setIsSending(false);
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const resetForAnother = () => {
+    setIsSubmitted(false);
+    setErrorMsg(null);
+    setIsSending(false);
+    setFormData(initialForm);
   };
 
   if (!isOpen) return null;
@@ -83,9 +100,12 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
           {/* Header */}
           <div className="flex justify-between items-center p-6 border-b border-slate-900">
             <div>
-              <h3 className="text-xl font-display font-semibold text-white">Project Consultation</h3>
+              <h3 className="text-xl font-display font-semibold text-white">
+                Project Consultation
+              </h3>
               <p className="text-xs text-slate-500">Let's discuss your custom website</p>
             </div>
+
             <button
               onClick={onClose}
               className="text-slate-500 hover:text-white transition-colors"
@@ -102,14 +122,25 @@ const InquiryModal: React.FC<InquiryModalProps> = ({ isOpen, onClose }) => {
                 <CheckCircle className="text-accent-cyan mb-4" size={48} />
                 <h4 className="text-xl font-bold text-white mb-2">Request Received</h4>
                 <p className="text-slate-400 mb-6">
-                  I&apos;ll review your project details and reach out via email or WhatsApp.
+                  Your request has been submitted. You can send another one anytime.
                 </p>
-                <button
-                  onClick={onClose}
-                  className="px-6 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white rounded-lg transition-colors"
-                >
-                  Close
-                </button>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={resetForAnother}
+                    className="px-5 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white rounded-lg transition-colors inline-flex items-center gap-2"
+                  >
+                    <RotateCcw size={16} />
+                    Send another
+                  </button>
+
+                  <button
+                    onClick={onClose}
+                    className="px-5 py-2 bg-accent-cyan text-slate-950 font-bold rounded-lg hover:bg-cyan-400 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             ) : (
               <form
