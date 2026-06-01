@@ -114,7 +114,7 @@ export const CLIENT_EXAMPLE_AIRA = {
   industry: "Clothing Brand",
   role: "Full Development & Monthly Maintenance",
   description: "A customized clothing brand website built to client specifications. This project demonstrates my ability to deliver production-ready solutions and provide ongoing monthly maintenance for updates, fixes, and feature enhancements.",
-  url: "https://airacraft.netlify.app/",
+  url: "https://airacraft.pages.dev/#/",
   techStack: ["React.js", "Tailwind CSS", "Production Deployment"],
 };
 
@@ -124,7 +124,7 @@ export const CLIENT_EXAMPLE_DEMO_1 = {
   industry: "Beauty & Wellness",
   role: "Website Design & Development",
   description: "A modern beauty parlour website focused on branding, services showcase, and WhatsApp booking.",
-  url: "https://pearl-by-payel-demo.netlify.app/",
+  url: "https://demo-beauty-salon.pages.dev/",
   techStack: ["React.js", "Tailwind CSS", "Brand UI"],
 };
 
@@ -134,7 +134,7 @@ export const CLIENT_EXAMPLE_DEMO_2 = {
   industry: "Pakaging Services",
   role: "Frontend Development",
   description: "A web platform for managing pakaging services for new business , orders, and informations about pakaging materials.",
-  url: "https://demopakage.netlify.app/",
+  url: "https://demopakage-shop.pages.dev/",
   techStack: ["React.js", "Tailwind CSS"],
 };
 
@@ -147,7 +147,7 @@ export const CLIENT_WORKS: ClientWork[] = [
     role: "Full Development & Monthly Maintenance",
     description:
       "A customized clothing brand website built to client specifications. Demonstrates production-ready delivery and ongoing monthly maintenance for updates, fixes, and improvements.",
-    url: "https://airacraft.netlify.app/",
+    url: "https://airacraft.pages.dev/#/",
     techStack: ["React.js", "Tailwind CSS", "Production Deployment"],
     previewImages: [
       "https://res.cloudinary.com/dx9efyuos/image/upload/v1765748596/Screenshot_2025-12-15_034254_yhyoyw.png",
@@ -164,7 +164,7 @@ export const CLIENT_WORKS: ClientWork[] = [
     role: "Website Design & Development",
     description:
       "A modern beauty parlour website focused on branding, services showcase, and WhatsApp booking.",
-    url: "https://pearl-by-payel-demo.netlify.app/",
+    url: "https://demo-beauty-salon.pages.dev/",
     techStack: ["React.js", "Tailwind CSS", "Brand UI"],
     previewImages: [
       "https://res.cloudinary.com/dx9efyuos/image/upload/v1766162770/Screenshot_2025-12-19_210612_lr6e1j.png",
@@ -181,7 +181,7 @@ export const CLIENT_WORKS: ClientWork[] = [
     role: "Frontend Development",
     description:
       "A web platform for showcasing packaging materials, service info, and customer-facing order flow for a new business.",
-    url: "https://demopakage.netlify.app/",
+    url: "https://sociafy.pages.dev/",
     techStack: ["React.js", "Tailwind CSS"],
     previewImages: [
       "https://res.cloudinary.com/dx9efyuos/image/upload/v1766162768/Screenshot_2025-12-19_210805_xuusvu.png",
